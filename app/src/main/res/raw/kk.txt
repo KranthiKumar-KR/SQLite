@@ -1,0 +1,11 @@
+5/24/2016
+adapters in java
+dif btwn list view and scroll view
+android.R.????
+ArrayAdapter??
+templates in java
+T view??
+edit text: singleline,password,inputtype,maxlines,min lines,gettext,settext,onclicklistener in java,listviews in java
+
+5/25/2016:
+check blue short notebook
