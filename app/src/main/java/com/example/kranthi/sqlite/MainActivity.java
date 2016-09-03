@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
- 
+
 
     EditText userName;
     EditText passWord;
@@ -30,33 +30,38 @@ public class MainActivity extends AppCompatActivity {
         final Boolean checked = rm.isChecked();
 
 
-        final String username1 = userName.getText().toString();
-      String  password1 = passWord.getText().toString();
+
+        /*logIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                 String username1 = userName.getText().toString();
+                 String  password1 = passWord.getText().toString();
+                Toast.makeText(getApplicationContext(),username1 + password1,Toast.LENGTH_LONG).show();
+            }
+        });*/
 
         final SQLiteDatabase database = this.openOrCreateDatabase("Users", MODE_PRIVATE, null);
-        database.execSQL("CREATE TABLE IF NOT EXISTS users (uname VARCHAR, pword VARCHAR)");
+        database.execSQL("CREATE TABLE IF NOT EXISTS users (uname VARCHAR UNIQUE, pword VARCHAR UNIQUE)");
+        //database.execSQL("CREATE UNIQUE INDEX idx_something ON users (uname, pword)");
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), username1 , Toast.LENGTH_LONG).show();
-                /*if (username1 != "" && password1 != "") {*/
-                try {
-                    database.execSQL("INSERT INTO users(uname, pword) VALUES('kkk', '123')");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
-                Toast.makeText(getApplicationContext(), passWord.getText().toString(), Toast.LENGTH_LONG).show();
-               /* } else {
+                String username1 = userName.getText().toString();
+                String password1 = passWord.getText().toString();
+                if (username1 != null && !username1.trim().isEmpty() && password1 != null && !password1.trim().isEmpty()) {
+                    try {
+                        database.execSQL("INSERT OR REPLACE INTO users(uname, pword) VALUES('" + username1 + "', '" + password1 + "')");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    Toast.makeText(getApplicationContext(), passWord.getText().toString(), Toast.LENGTH_LONG).show();
+                } else {
                     Toast.makeText(getApplicationContext(), "Please enter details", Toast.LENGTH_LONG).show();
                 }
-            }*/
-
-
             }
-
         });
-
         logIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,32 +72,25 @@ public class MainActivity extends AppCompatActivity {
                     int pwordIndex = c.getColumnIndex("pword");
                     c.moveToFirst();
                     while (c != null) {
-                        String savedUname = c.getString(unameIndex);
-                        String savedPword = c.getString(pwordIndex);
-                        Toast.makeText(getApplicationContext(), savedPword , Toast.LENGTH_LONG).show();
-                        Toast.makeText(getApplicationContext(), savedUname, Toast.LENGTH_LONG).show();
+                        {
+                            String savedUname = c.getString(unameIndex);
+                            String savedPword = c.getString(pwordIndex);
 
-
-                        if (savedUname.equals(userName.getText().toString())) {
-                            Toast.makeText(getApplicationContext(), " correct username ", Toast.LENGTH_LONG).show();
-                            if (savedPword.equals(passWord.getText().toString())) {
-                                Toast.makeText(getApplicationContext(), " correct password ", Toast.LENGTH_LONG).show();
-                                intent.setAction(Intent.ACTION_VIEW);
-                                startActivity(intent);
-                            } else {
-                                Toast.makeText(getApplicationContext(), " Incorrect password ", Toast.LENGTH_LONG).show();
+                            if (savedUname.equals(userName.getText().toString())) {
+                                if (savedPword.equals(passWord.getText().toString())) {
+                                    intent.setAction(Intent.ACTION_VIEW);
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(getApplicationContext(), " Incorrect username or password ", Toast.LENGTH_LONG).show();
+                                }
                             }
-                        } else {
-                            Toast.makeText(getApplicationContext(), " Incorrect Username and Password ", Toast.LENGTH_LONG).show();
                         }
                         c.moveToNext();
-
                     }
-                }catch (Exception e){
+
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-
             }
         });
 

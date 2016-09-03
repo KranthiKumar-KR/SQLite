@@ -18,7 +18,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:hint="Username" />
+        android:hint="Username"
+        android:imeOptions="actionDone"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -31,7 +32,8 @@
         android:layout_marginTop="47dp"
         android:layout_below="@+id/username"
         android:layout_centerHorizontal="true"
-        android:hint="Password" />
+        android:hint="Password"
+        android:imeOptions="actionDone"/>
 
     <CheckBox
         android:layout_width="wrap_content"
